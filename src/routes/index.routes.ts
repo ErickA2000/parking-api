@@ -1,5 +1,5 @@
 import { Router } from "express";
-import routes from "./routes";
+import routes from "./v1/routes";
 
 class IndexRoutes {
   public router: Router = Router();

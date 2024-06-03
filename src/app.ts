@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { corsOptions, server } from "./config";
 import { queryParser } from "express-query-parser";
-import indexRoutes from "@Routes/v1/index.routes";
+import indexRoutes from "@Routes/index.routes";
 
 export default class App {
   public app: Application;
