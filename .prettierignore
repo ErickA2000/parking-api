@@ -1,0 +1,4 @@
+dist/
+node_moduler/
+test/
+config/jest/
