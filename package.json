@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/ErickA2000/express-typescript-template#readme",
   "dependencies": {
+    "@prisma/client": "^5.14.0",
     "cors": "2.8.5",
     "dotenv": "16.3.1",
     "express": "4.18.2",
@@ -57,6 +58,7 @@
     "jest-watch-typeahead": "^2.2.2",
     "nodemon": "^3.0.2",
     "prettier": "^3.2.2",
+    "prisma": "^5.14.0",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8",
