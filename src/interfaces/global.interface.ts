@@ -9,3 +9,8 @@ export interface PaginateResponse<T> {
   prevPage: number | null;
   nextPage: number | null;
 }
+
+export interface Payload {
+  user: string;
+  role: string;
+}

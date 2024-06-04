@@ -34,7 +34,7 @@ export class UserApp {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findByEmail(email);
 
     if (user == null) throw new UserError({ method: "get" }, email);

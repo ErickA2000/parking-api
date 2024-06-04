@@ -1,24 +1,12 @@
 import { CODES_HTTP } from "@Constants/global";
 
-export class UserError extends Error {
+export class AuthError extends Error {
   public status: number;
 
-  constructor(options: Options, id = "") {
+  constructor(options: Options) {
     const MESSAGES = {
-      get: {
-        message: `User ${id} not found`,
-        status: CODES_HTTP.NO_FOUND
-      },
-      create: {
-        message: "Error adding",
-        status: CODES_HTTP.BAD_REQUEST
-      },
-      update: {
-        message: "Error updating",
-        status: CODES_HTTP.BAD_REQUEST
-      },
-      delete: {
-        message: "Error deleting",
+      password: {
+        message: "Invalid password",
         status: CODES_HTTP.BAD_REQUEST
       }
     };
@@ -34,5 +22,5 @@ export class UserError extends Error {
 }
 
 interface Options {
-  method: "get" | "create" | "update" | "delete";
+  method: "password";
 }
