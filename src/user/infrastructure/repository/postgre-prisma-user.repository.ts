@@ -1,0 +1,73 @@
+import type { PaginateResponse } from "@Interfaces/global.interface";
+import type { UserCreateDTO, UserUpdateDTO } from "@User/DTO/user.dto";
+import type { UserRepository } from "@User/domain/repositories/user.repository";
+import type { User } from "@prisma/client";
+import { paginate, prisma } from "prisma";
+
+export class PostgrePrismaUserRepository implements UserRepository {
+  async findAll(): Promise<User[]> {
+    return await prisma.user.findMany();
+  }
+
+  async findAllPaginate(
+    page: number,
+    limit: number
+  ): Promise<PaginateResponse<User>> {
+    if (page <= 0) page = 1;
+    if (limit <= 0) limit = 10;
+
+    const count = await prisma.user.count();
+    const offset = (page - 1) * limit;
+    const pages = Math.ceil(count / limit);
+
+    const users = await prisma.user.findMany({
+      skip: offset,
+      take: limit
+    });
+
+    return paginate<User>(users, {
+      page,
+      limit,
+      pages,
+      count,
+      length: users.length
+    });
+  }
+
+  async findById(id: string): Promise<User | null> {
+    return await prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await prisma.user.findFirst({
+      where: {
+        email
+      }
+    });
+  }
+
+  async create(data: UserCreateDTO): Promise<User> {
+    return await prisma.user.create({ data });
+  }
+
+  async update(id: string, data: UserUpdateDTO): Promise<User> {
+    return await prisma.user.update({
+      where: {
+        id
+      },
+      data
+    });
+  }
+
+  async delete(id: string): Promise<User> {
+    return await prisma.user.delete({
+      where: {
+        id
+      }
+    });
+  }
+}

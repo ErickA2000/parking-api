@@ -1,5 +1,6 @@
 import { hashPassword } from "@Helpers/password";
 import { PrismaClient } from "@prisma/client";
+import type { PaginateResponse } from "interfaces/global.interface";
 
 const prisma = new PrismaClient();
 
@@ -57,4 +58,28 @@ createUsers().catch((err) => {
   console.error(err);
 });
 
-export default prisma;
+function paginate<T>(
+  docs: T[],
+  complement: {
+    page: number;
+    limit: number;
+    pages: number;
+    count: number;
+    length: number;
+  }
+): PaginateResponse<T> {
+  const { page, limit, count, length, pages } = complement;
+  return {
+    docs,
+    totalDocs: count,
+    totalPages: pages,
+    limit,
+    page,
+    hasPrevPage: !(page === 1 || length === 0),
+    hasNextPage: pages > page,
+    nextPage: page === pages || length === 0 ? null : page + 1,
+    prevPage: page <= 1 || length === 0 ? null : page - 1
+  };
+}
+
+export { prisma, paginate };

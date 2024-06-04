@@ -1,9 +1,9 @@
-import { IsString } from "class-validator";
-
 export class RoleCreateDTO {
-  @IsString()
   name: string;
-
-  @IsString()
   description: string;
+}
+
+export class RoleUpdateDTO {
+  name?: string;
+  description?: string;
 }

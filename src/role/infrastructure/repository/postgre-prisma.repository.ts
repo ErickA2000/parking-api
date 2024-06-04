@@ -1,6 +1,6 @@
 import type { Role } from "@prisma/client";
-import prisma from "prisma";
-import type { RoleCreateDTO } from "@Role/DTO/role.dto";
+import { prisma } from "prisma";
+import type { RoleCreateDTO, RoleUpdateDTO } from "@Role/DTO/role.dto";
 import type { RoleRepository } from "@Role/domain/repositories/role.repository";
 
 export class PostgrePrismaRoleRepository implements RoleRepository {
@@ -18,7 +18,7 @@ export class PostgrePrismaRoleRepository implements RoleRepository {
     return await prisma.role.create({ data });
   }
 
-  async update(id: string, data: RoleCreateDTO): Promise<Role> {
+  async update(id: string, data: RoleUpdateDTO): Promise<Role> {
     return await prisma.role.update({
       where: {
         id
