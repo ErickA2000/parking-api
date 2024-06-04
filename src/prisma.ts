@@ -1,3 +1,4 @@
+import { hashPassword } from "@Helpers/password";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -22,7 +23,37 @@ async function createRoles(): Promise<void> {
   }
 }
 
+//* Add users
+async function createUsers(): Promise<void> {
+  const count = await prisma.user.count();
+
+  if (count === 0) {
+    const role = await prisma.role.findFirst({
+      where: {
+        name: "admin"
+      }
+    });
+
+    if (role === null) throw new Error("Role not found");
+
+    await prisma.user.createMany({
+      data: [
+        {
+          email: "admin@example.com",
+          password: await hashPassword("Admin@1234"),
+          name: "Admin",
+          idRole: role?.id
+        }
+      ]
+    });
+  }
+}
+
 createRoles().catch((err) => {
+  console.error(err);
+});
+
+createUsers().catch((err) => {
   console.error(err);
 });
 

@@ -15,6 +15,11 @@ export const database = {
       : process.env.DATABASE
 };
 
+export const jwtSecret =
+  process.env.JWT_SECRET === undefined || process.env.JWT_SECRET === ""
+    ? "jwtSecretTest"
+    : process.env.JWT_SECRET;
+
 function getOrigins(): string[] {
   const origins = process.env.ORIGINS;
 
