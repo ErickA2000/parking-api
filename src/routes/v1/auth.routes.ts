@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { LoginDTO } from "@Auth/DTO/auth.dto";
-import { loginController } from "@Auth/dependencies";
+import { loginController, registerController } from "@Auth/dependencies";
+import { authentication } from "@Middlewares/index";
 import { validateDTO } from "@Middlewares/validateDTO";
+import { UserCreateDTO } from "@User/DTO/user.dto";
 import { Router } from "express";
 
 class AuthRouter {
@@ -16,6 +18,15 @@ class AuthRouter {
       "/login",
       [validateDTO(LoginDTO)],
       loginController.run.bind(loginController)
+    );
+    this.router.post(
+      "/register",
+      [
+        authentication.tokenValidation,
+        authentication.isAdmin,
+        validateDTO(UserCreateDTO)
+      ],
+      registerController.run.bind(registerController)
     );
   }
 }

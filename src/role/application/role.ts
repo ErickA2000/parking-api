@@ -9,7 +9,7 @@ export class RoleApp {
     return await this.roleRepository.findAll();
   }
 
-  async findById(id: string): Promise<Role | null> {
+  async findById(id: string): Promise<Role> {
     const role = await this.roleRepository.findById(id);
 
     if (role == null) throw new RoleError({ method: "get" }, id);
