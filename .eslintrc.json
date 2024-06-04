@@ -21,6 +21,7 @@
   "ignorePatterns": ["jest.config.ts", "test"],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "error",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "@typescript-eslint/method-signature-style": "off"
   }
 }

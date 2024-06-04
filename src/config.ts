@@ -8,6 +8,13 @@ export const corsOptions: CorsOptions = {
   origin: getOrigins()
 };
 
+export const database = {
+  name:
+    process.env.DATABASE === undefined || process.env.DATABASE === ""
+      ? "postgres"
+      : process.env.DATABASE
+};
+
 function getOrigins(): string[] {
   const origins = process.env.ORIGINS;
 
