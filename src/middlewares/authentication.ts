@@ -5,7 +5,7 @@ import type { Payload } from "@Interfaces/global.interface";
 import type { NextFunction, Request, Response } from "express";
 import { prisma } from "prisma";
 
-export const tokenValidation = (
+export const tokenValidation = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -20,7 +20,18 @@ export const tokenValidation = (
   try {
     const payload = verifyToken<Payload>(token);
 
-    req.user = payload;
+    const role = await prisma.role.findUnique({
+      where: {
+        id: payload.role
+      }
+    });
+
+    if (role === null) throw new Error("null");
+
+    req.user = {
+      roleName: role.name,
+      ...payload
+    };
 
     next();
   } catch (error) {

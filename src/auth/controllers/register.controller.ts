@@ -2,6 +2,7 @@
 import type { RegisterService } from "@Auth/services/register.service";
 import { CODES_HTTP } from "@Constants/global";
 import { RoleError } from "@Role/domain/errors/role-error";
+import type { UserCreateDTO } from "@User/DTO/user.dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import type { Request, Response } from "express";
 
@@ -10,7 +11,9 @@ export class RegisterController {
 
   async run(req: Request, res: Response) {
     try {
-      const user = await this.registerService.register(req.body);
+      const user = await this.registerService.register(
+        req.body as UserCreateDTO
+      );
 
       const { password, ...dataUser } = user;
 

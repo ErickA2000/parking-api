@@ -23,7 +23,7 @@ export class UserApp {
     return await this.userRepository.findAllPaginate(page, limit);
   }
 
-  async findById(id: string): Promise<IUser | null> {
+  async findById(id: string): Promise<IUser> {
     const user = await this.userRepository.findById(id);
 
     if (user == null) throw new UserError({ method: "get" }, id);

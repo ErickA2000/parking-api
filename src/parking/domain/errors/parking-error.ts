@@ -1,12 +1,12 @@
 import { CODES_HTTP } from "@Constants/global";
 
-export class UserError extends Error {
+export class ParkingError extends Error {
   public status: number;
 
   constructor(options: Options, id = "") {
     const MESSAGES = {
       get: {
-        message: `User ${id} not found`,
+        message: `Parking ${id} not found`,
         status: CODES_HTTP.NO_FOUND
       },
       create: {

@@ -61,7 +61,8 @@ export class PostgrePrismaUserRepository implements UserRepository {
         name: true,
         idRole: true,
         password: true,
-        Parking: true
+        Parking: true,
+        Role: true
       }
     });
   }
