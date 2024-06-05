@@ -1,5 +1,5 @@
 import { IsPassword } from "@Decorators/password.decorator";
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class UserCreateDTO {
   @IsString()
@@ -23,7 +23,22 @@ export class UserCreateDTO {
 
 export class UserUpdateDTO {
   idRole?: string;
+
+  @IsString()
+  @IsOptional()
   name?: string;
+
+  @IsString()
+  @IsOptional()
+  @IsEmail()
   email?: string;
+
+  @IsString()
+  @IsOptional()
+  @IsPassword()
   password?: string;
+
+  @IsString()
+  @IsOptional()
+  currentPassword?: string;
 }

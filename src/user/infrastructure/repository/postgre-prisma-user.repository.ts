@@ -1,18 +1,27 @@
 import type { PaginateResponse } from "@Interfaces/global.interface";
+import type { IUser } from "@Interfaces/user.interface";
 import type { UserCreateDTO, UserUpdateDTO } from "@User/DTO/user.dto";
 import type { UserRepository } from "@User/domain/repositories/user.repository";
 import type { User } from "@prisma/client";
 import { paginate, prisma } from "prisma";
 
 export class PostgrePrismaUserRepository implements UserRepository {
-  async findAll(): Promise<User[]> {
-    return await prisma.user.findMany();
+  async findAll(): Promise<IUser[]> {
+    return await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        idRole: true,
+        Parking: true
+      }
+    });
   }
 
   async findAllPaginate(
     page: number,
     limit: number
-  ): Promise<PaginateResponse<User>> {
+  ): Promise<PaginateResponse<IUser>> {
     if (page <= 0) page = 1;
     if (limit <= 0) limit = 10;
 
@@ -22,10 +31,17 @@ export class PostgrePrismaUserRepository implements UserRepository {
 
     const users = await prisma.user.findMany({
       skip: offset,
-      take: limit
+      take: limit,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        idRole: true,
+        Parking: true
+      }
     });
 
-    return paginate<User>(users, {
+    return paginate<IUser>(users, {
       page,
       limit,
       pages,
@@ -34,10 +50,18 @@ export class PostgrePrismaUserRepository implements UserRepository {
     });
   }
 
-  async findById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<IUser | null> {
     return await prisma.user.findUnique({
       where: {
         id
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        idRole: true,
+        password: true,
+        Parking: true
       }
     });
   }

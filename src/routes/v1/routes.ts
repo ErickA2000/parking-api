@@ -2,6 +2,7 @@ import { Router } from "express";
 import healthRoutes from "./health.routes";
 import roleRoutes from "./role.routes";
 import authRoutes from "./auth.routes";
+import userRoutes from "./user.routes";
 
 class Routes {
   public router: Router = Router();
@@ -14,6 +15,7 @@ class Routes {
     this.router.use("/health", healthRoutes);
     this.router.use("/roles", roleRoutes);
     this.router.use("/auth", authRoutes);
+    this.router.use("/users", userRoutes);
   }
 }
 

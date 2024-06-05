@@ -17,11 +17,17 @@ export const tokenValidation = (
     });
   }
 
-  const payload = verifyToken<Payload>(token);
+  try {
+    const payload = verifyToken<Payload>(token);
 
-  req.user = payload;
+    req.user = payload;
 
-  next();
+    next();
+  } catch (error) {
+    return res.status(CODES_HTTP.UNAUTHORIZED).json({
+      message: "Token no valido"
+    });
+  }
 };
 
 export const isAdmin = async (

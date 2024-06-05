@@ -14,7 +14,7 @@ export class UserError extends Error {
         status: CODES_HTTP.BAD_REQUEST
       },
       update: {
-        message: "Error updating",
+        message: options.message ?? "Error updating",
         status: CODES_HTTP.BAD_REQUEST
       },
       delete: {
@@ -35,4 +35,5 @@ export class UserError extends Error {
 
 interface Options {
   method: "get" | "create" | "update" | "delete";
+  message?: string;
 }
