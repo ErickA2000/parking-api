@@ -1,3 +1,4 @@
+import { HistoryApp } from "@History/application/history";
 import type { ParkingApp } from "@Parking/application/parking";
 import type {
   VehicleCreateDTO,
@@ -11,7 +12,8 @@ import type { Vehicle } from "@prisma/client";
 export class VehicleApp {
   constructor(
     private readonly vehicleRepository: VehicleRepository,
-    private readonly parking: ParkingApp
+    private readonly parking: ParkingApp,
+    private readonly history: HistoryApp
   ) {}
 
   async findAll(
