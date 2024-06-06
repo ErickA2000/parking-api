@@ -55,7 +55,7 @@ model History {
   plate     String
   dateEntry DateTime
   exitDate  DateTime
-  amount    String
+  amount    Float
   Parking   Parking  @relation(fields: [idParking], references: [id])
   
   @@index([plate])

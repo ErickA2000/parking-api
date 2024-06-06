@@ -3,7 +3,7 @@ export class HistoryCreateDTO {
   plate: string;
   dateEntry: Date;
   exitDate: Date;
-  amount: string;
+  amount: number;
 }
 
 export class HistoryUpdateDTO {
@@ -11,5 +11,5 @@ export class HistoryUpdateDTO {
   plate?: string;
   dateEntry?: Date;
   exitDate?: Date;
-  amount?: string;
+  amount?: number;
 }

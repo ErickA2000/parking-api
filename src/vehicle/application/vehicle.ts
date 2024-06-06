@@ -106,7 +106,7 @@ export class VehicleApp {
       idParking: currentVehicle.idParking,
       dateEntry: currentVehicle.dateEntry,
       exitDate: currentDate,
-      amount: amount.toFixed(),
+      amount,
       plate: currentVehicle.plate
     });
 
