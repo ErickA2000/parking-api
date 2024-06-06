@@ -1,3 +1,5 @@
+import type { PaginateResponse } from "@Interfaces/global.interface";
+import type { IVehicle } from "@Interfaces/vehicle.interface";
 import type { BaseRepository } from "@Repositories/base.repository";
 import type {
   VehicleCreateDTO,
@@ -11,5 +13,10 @@ export interface VehicleRepository
   findOneByIdParkingAndPlate(
     idParking: string,
     plate: string
-  ): Promise<Vehicle | null>;
+  ): Promise<IVehicle | null>;
+  findAllPaginate(
+    page: number,
+    limit: number,
+    idParking: string
+  ): Promise<PaginateResponse<Vehicle>>;
 }

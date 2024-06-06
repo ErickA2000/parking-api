@@ -6,7 +6,7 @@ export class ParkingError extends Error {
   constructor(options: Options, id = "") {
     const MESSAGES = {
       get: {
-        message: `Parking ${id} not found`,
+        message: options.message ?? `Parking ${id} not found`,
         status: CODES_HTTP.NO_FOUND
       },
       create: {

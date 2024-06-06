@@ -5,16 +5,29 @@ import { ParkingError } from "@Parking/domain/errors/parking-error";
 import type { VehicleApp } from "@Vehicle/application/vehicle";
 import type { Request, Response } from "express";
 
-export class GetAllVehiclesController {
+export class GetAllPaginateVehicleController {
   constructor(private readonly vehicle: VehicleApp) {}
 
   async run(req: Request, res: Response) {
+    const { page: p, limit: l } = req.query;
+    const page = p === undefined ? 1 : Number(p);
+    const limit = l === undefined ? 10 : Number(l);
+
     const { idParking } = req.params;
     const { user, roleName } = req.user;
     try {
-      const vehicles = await this.vehicle.findAll(idParking, user, roleName);
+      const vehicles = await this.vehicle.findAllPaginate(
+        page,
+        limit,
+        idParking,
+        user,
+        roleName
+      );
 
-      res.status(CODES_HTTP.OK).json(vehicles);
+      res.status(CODES_HTTP.OK).json({
+        success: true,
+        data: vehicles
+      });
     } catch (error) {
       if (error instanceof ParkingError) {
         return res.status(error.status).json({
@@ -22,7 +35,6 @@ export class GetAllVehiclesController {
           message: error.message
         });
       }
-
       return res.status(CODES_HTTP.INTERNAL_SERVER_ERROR).json({
         success: false,
         message: error.message

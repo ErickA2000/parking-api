@@ -1,10 +1,12 @@
+import type { PaginateResponse } from "@Interfaces/global.interface";
+import type { IVehicle } from "@Interfaces/vehicle.interface";
 import type {
   VehicleCreateDTO,
   VehicleUpdateDTO
 } from "@Vehicle/DTO/vehicle.dto";
 import type { VehicleRepository } from "@Vehicle/domain/repositories/vehicle.repository";
 import type { Vehicle } from "@prisma/client";
-import { prisma } from "prisma";
+import { paginate, prisma } from "prisma";
 
 export class PostgrePrismaVehicleRepository implements VehicleRepository {
   async findAll(idParking: string): Promise<Vehicle[]> {
@@ -12,6 +14,39 @@ export class PostgrePrismaVehicleRepository implements VehicleRepository {
       where: {
         idParking
       }
+    });
+  }
+
+  async findAllPaginate(
+    page: number,
+    limit: number,
+    idParking: string
+  ): Promise<PaginateResponse<Vehicle>> {
+    if (page <= 0) page = 1;
+    if (limit <= 0) limit = 10;
+
+    const count = await prisma.vehicle.count({
+      where: {
+        idParking
+      }
+    });
+    const offset = (page - 1) * limit;
+    const pages = Math.ceil(count / limit);
+
+    const vehicles = await prisma.vehicle.findMany({
+      skip: offset,
+      take: limit,
+      where: {
+        idParking
+      }
+    });
+
+    return paginate<Vehicle>(vehicles, {
+      page,
+      limit,
+      pages,
+      count,
+      length: vehicles.length
     });
   }
 
@@ -26,11 +61,14 @@ export class PostgrePrismaVehicleRepository implements VehicleRepository {
   async findOneByIdParkingAndPlate(
     idParking: string,
     plate: string
-  ): Promise<Vehicle | null> {
+  ): Promise<IVehicle | null> {
     return await prisma.vehicle.findFirst({
       where: {
         idParking,
         plate
+      },
+      include: {
+        Parking: true
       }
     });
   }

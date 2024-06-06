@@ -1,5 +1,7 @@
-import { HistoryApp } from "@History/application/history";
+import type { HistoryApp } from "@History/application/history";
+import type { PaginateResponse } from "@Interfaces/global.interface";
 import type { ParkingApp } from "@Parking/application/parking";
+import { compareDatesInHours } from "@Utils/compareDatesInHours";
 import type {
   VehicleCreateDTO,
   VehicleOutParkingDTO,
@@ -30,6 +32,26 @@ export class VehicleApp {
     return await this.vehicleRepository.findAll(idParking);
   }
 
+  async findAllPaginate(
+    page: number,
+    limit: number,
+    idParking: string,
+    idUser: string,
+    roleName: string
+  ): Promise<PaginateResponse<Vehicle>> {
+    if (roleName === "socio") {
+      await this.parking.findByIdWithSocio(idParking, idUser);
+
+      return await this.vehicleRepository.findAllPaginate(
+        page,
+        limit,
+        idParking
+      );
+    }
+
+    return await this.vehicleRepository.findAllPaginate(page, limit, idParking);
+  }
+
   async create(data: VehicleCreateDTO, idUser: string): Promise<Vehicle> {
     const parking = await this.parking.findByIdWithSocio(
       data.idParking,
@@ -43,7 +65,11 @@ export class VehicleApp {
       });
     }
 
-    return await this.vehicleRepository.create(data);
+    return await this.vehicleRepository.create({
+      dateEntry: new Date(),
+      idParking: data.idParking,
+      plate: data.plate
+    });
   }
 
   async update(id: string, data: VehicleUpdateDTO): Promise<Vehicle> {
@@ -51,7 +77,12 @@ export class VehicleApp {
     // return this.vehicleRepository.update(id, data);
   }
 
-  async outVehicle(data: VehicleOutParkingDTO): Promise<Vehicle> {
+  async outVehicle(
+    data: VehicleOutParkingDTO,
+    idUser: string
+  ): Promise<Vehicle> {
+    await this.parking.findByIdWithSocio(data.idParking, idUser);
+
     const currentVehicle =
       await this.vehicleRepository.findOneByIdParkingAndPlate(
         data.idParking,
@@ -67,6 +98,19 @@ export class VehicleApp {
     }
 
     const currentDate = new Date();
+    const hours = compareDatesInHours(currentVehicle.dateEntry, currentDate);
+
+    const amount = hours * currentVehicle.Parking.priceHour;
+
+    await this.history.create({
+      idParking: currentVehicle.idParking,
+      dateEntry: currentVehicle.dateEntry,
+      exitDate: currentDate,
+      amount: amount.toFixed(),
+      plate: currentVehicle.plate
+    });
+
+    return await this.vehicleRepository.delete(currentVehicle.id);
   }
 
   async delete(id: string): Promise<Vehicle> {

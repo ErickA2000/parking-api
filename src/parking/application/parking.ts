@@ -44,10 +44,10 @@ export class ParkingApp {
     const parking = await this.parkingRepository.findById(id, idUser);
 
     if (parking === null) {
-      throw new ParkingError(
-        { method: "get", message: "Parking not found" },
-        id
-      );
+      throw new ParkingError({
+        method: "get",
+        message: "Parqueadero no encontrado"
+      });
     }
 
     return parking;
