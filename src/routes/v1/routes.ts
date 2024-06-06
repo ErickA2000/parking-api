@@ -4,6 +4,7 @@ import roleRoutes from "./role.routes";
 import authRoutes from "./auth.routes";
 import userRoutes from "./user.routes";
 import parkingRoutes from "./parking.routes";
+import vehicleRoutes from "./vehicle.routes";
 
 class Routes {
   public router: Router = Router();
@@ -18,6 +19,7 @@ class Routes {
     this.router.use("/auth", authRoutes);
     this.router.use("/users", userRoutes);
     this.router.use("/parking", parkingRoutes);
+    this.router.use("/vehicles", vehicleRoutes);
   }
 }
 

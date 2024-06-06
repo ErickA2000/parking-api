@@ -17,9 +17,9 @@ export class ParkingApp {
 
   async findAll(roleName: string, idUser?: string): Promise<IParking[]> {
     if (roleName === "socio") {
-      return this.parkingRepository.findAll(idUser);
+      return await this.parkingRepository.findAll(idUser);
     }
-    return this.parkingRepository.findAll();
+    return await this.parkingRepository.findAll();
   }
 
   async findById(
@@ -40,6 +40,19 @@ export class ParkingApp {
     return parking;
   }
 
+  async findByIdWithSocio(id: string, idUser: string): Promise<IParking> {
+    const parking = await this.parkingRepository.findById(id, idUser);
+
+    if (parking === null) {
+      throw new ParkingError(
+        { method: "get", message: "Parking not found" },
+        id
+      );
+    }
+
+    return parking;
+  }
+
   async create(data: ParkingCreateDTO): Promise<Parking> {
     const user = await this.user.findById(data.idUser);
 
@@ -47,7 +60,7 @@ export class ParkingApp {
       throw new ParkingError({ method: "create", message: "User not found" });
     }
 
-    return this.parkingRepository.create(data);
+    return await this.parkingRepository.create(data);
   }
 
   async update(id: string, data: ParkingUpdateDTO): Promise<Parking> {
@@ -59,10 +72,10 @@ export class ParkingApp {
       }
     }
 
-    return this.parkingRepository.update(id, data);
+    return await this.parkingRepository.update(id, data);
   }
 
   async delete(id: string): Promise<Parking> {
-    return this.parkingRepository.delete(id);
+    return await this.parkingRepository.delete(id);
   }
 }

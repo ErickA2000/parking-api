@@ -27,6 +27,7 @@ export class PostgrePrismaParkingRepository implements ParkingRepository {
         idUser
       },
       include: {
+        _count: true,
         Vehicle: true
       }
     });
