@@ -7,8 +7,8 @@ export interface HistoryTop10Vehicles {
 }
 
 export interface Earnings {
-  today: any;
-  week: any;
-  month: any;
-  year: any;
+  today: number;
+  week: number;
+  month: number;
+  year: number;
 }

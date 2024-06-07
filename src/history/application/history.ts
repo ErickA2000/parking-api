@@ -32,7 +32,7 @@ export class HistoryApp {
 
     const idsParking = parking.map((parking) => parking.id);
 
-    return this.historyRepository.findTop10Vehicles(idsParking);
+    return await this.historyRepository.findTop10Vehicles(idsParking);
   }
 
   async findTop10VehiclesOneParking(
@@ -43,10 +43,10 @@ export class HistoryApp {
     if (roleName === "socio") {
       await this.parking.findByIdWithSocio(idParking, idUser);
 
-      return this.historyRepository.findTop10Vehicles([idParking]);
+      return await this.historyRepository.findTop10Vehicles([idParking]);
     }
 
-    return this.historyRepository.findTop10Vehicles([idParking]);
+    return await this.historyRepository.findTop10Vehicles([idParking]);
   }
 
   async findFirstTimeParked(
@@ -57,15 +57,15 @@ export class HistoryApp {
     if (roleName === "socio") {
       await this.parking.findByIdWithSocio(idParking, idUser);
 
-      return this.historyRepository.findFirstTimeParked(idParking);
+      return await this.historyRepository.findFirstTimeParked(idParking);
     }
-    return this.historyRepository.findFirstTimeParked(idParking);
+    return await this.historyRepository.findFirstTimeParked(idParking);
   }
 
   async findEarning(idParking: string, idUser: string): Promise<Earnings> {
     await this.parking.findByIdWithSocio(idParking, idUser);
 
-    return this.historyRepository.findEarnings(idParking);
+    return await this.historyRepository.findEarnings(idParking);
   }
 
   async findAll(): Promise<History[]> {
@@ -77,7 +77,7 @@ export class HistoryApp {
   }
 
   async create(data: HistoryCreateDTO): Promise<History> {
-    return this.historyRepository.create(data);
+    return await this.historyRepository.create(data);
   }
 
   async update(id: string, data: HistoryUpdateDTO): Promise<History> {

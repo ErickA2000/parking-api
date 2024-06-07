@@ -160,10 +160,10 @@ export class PostgrePrismaHistoryRepository implements HistoryRepository {
       ]);
 
     return {
-      today: todayEarnings,
-      week: weekEarnings,
-      month: monthEarnings,
-      year: yearEarnings
+      today: todayEarnings._sum.amount ?? 0,
+      week: weekEarnings._sum.amount ?? 0,
+      month: monthEarnings._sum.amount ?? 0,
+      year: yearEarnings._sum.amount ?? 0
     };
   }
 
