@@ -58,6 +58,17 @@ export class PostgrePrismaVehicleRepository implements VehicleRepository {
     });
   }
 
+  async findOneByPlate(plate: string): Promise<IVehicle | null> {
+    return await prisma.vehicle.findFirst({
+      where: {
+        plate
+      },
+      include: {
+        Parking: true
+      }
+    });
+  }
+
   async findOneByIdParkingAndPlate(
     idParking: string,
     plate: string

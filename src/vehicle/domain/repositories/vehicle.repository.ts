@@ -10,14 +10,19 @@ import type { Vehicle } from "@prisma/client";
 export interface VehicleRepository
   extends BaseRepository<VehicleCreateDTO, VehicleUpdateDTO, Vehicle, Vehicle> {
   findAll(idParking?: string): Promise<Vehicle[]>;
+
   findOneByIdParkingAndPlate(
     idParking: string,
     plate: string
   ): Promise<IVehicle | null>;
+
   findAllPaginate(
     page: number,
     limit: number,
     idParking: string
   ): Promise<PaginateResponse<Vehicle>>;
+
+  findOneByPlate(plate: string): Promise<IVehicle | null>;
+
   search(plate: string, idsParking?: string[]): Promise<Vehicle[]>;
 }

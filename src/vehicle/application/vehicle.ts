@@ -1,5 +1,6 @@
 import type { HistoryApp } from "@History/application/history";
 import type { PaginateResponse } from "@Interfaces/global.interface";
+import type { IVehicle } from "@Interfaces/vehicle.interface";
 import type { ParkingApp } from "@Parking/application/parking";
 import { compareDatesInHours } from "@Utils/compareDatesInHours";
 import type {
@@ -50,6 +51,19 @@ export class VehicleApp {
     }
 
     return await this.vehicleRepository.findAllPaginate(page, limit, idParking);
+  }
+
+  async findOneByPlate(plate: string): Promise<IVehicle> {
+    const vehicle = await this.vehicleRepository.findOneByPlate(plate);
+
+    if (vehicle === null) {
+      throw new VehicleError({
+        method: "get",
+        message: "Vehicle is not in the parking lot"
+      });
+    }
+
+    return vehicle;
   }
 
   async search(

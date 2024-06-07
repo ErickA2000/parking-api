@@ -6,6 +6,7 @@ import userRoutes from "./user.routes";
 import parkingRoutes from "./parking.routes";
 import vehicleRoutes from "./vehicle.routes";
 import historyRoutes from "./history.routes";
+import mailRoutes from "./mail.routes";
 
 class Routes {
   public router: Router = Router();
@@ -22,6 +23,7 @@ class Routes {
     this.router.use("/parking", parkingRoutes);
     this.router.use("/vehicles", vehicleRoutes);
     this.router.use("/indicators", historyRoutes);
+    this.router.use("/mail", mailRoutes);
   }
 }
 

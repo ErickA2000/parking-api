@@ -20,6 +20,16 @@ export const jwtSecret =
     ? "jwtSecretTest"
     : process.env.JWT_SECRET;
 
+export const mailApi = (): string => {
+  const mailApi = process.env.MAIL_API;
+  if (mailApi === undefined || mailApi === "") {
+    throw new Error("Mail api undefined");
+  }
+  return mailApi;
+};
+
+mailApi();
+
 function getOrigins(): string[] {
   const origins = process.env.ORIGINS;
 
