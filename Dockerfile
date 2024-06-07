@@ -28,4 +28,4 @@ RUN npm ci
 
 EXPOSE $PORT
 
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "node", "dist/server.js" ]
