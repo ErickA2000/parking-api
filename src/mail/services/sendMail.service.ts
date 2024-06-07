@@ -2,7 +2,7 @@
 import type { SendMailDTO } from "@Mail/DTO/sendMail.dto";
 import type { VehicleApp } from "@Vehicle/application/vehicle";
 import { mailApi } from "config";
-import fetch, { type Response } from "node-fetch";
+import axios from "axios";
 
 export class MailService {
   constructor(private readonly vehicle: VehicleApp) {}
@@ -18,19 +18,12 @@ export class MailService {
     };
 
     const url = mailApi() + "/api/v1/mail";
-    const response: Response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(bodyMail)
+    const response = await axios(url, {
+      data: bodyMail,
+      method: "POST"
     });
 
-    if (!response.ok) {
-      throw new Error(`Request error ${response.statusText}`);
-    }
-
-    const responseData = (await response.json()) as ResponseData;
+    const responseData = response.data as ResponseData;
 
     return responseData.message;
   }
