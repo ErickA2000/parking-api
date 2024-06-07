@@ -73,6 +73,19 @@ export class PostgrePrismaVehicleRepository implements VehicleRepository {
     });
   }
 
+  async search(plate: string, idsParking?: string[]): Promise<Vehicle[]> {
+    return await prisma.vehicle.findMany({
+      where: {
+        plate: {
+          contains: plate
+        },
+        idParking: {
+          in: idsParking
+        }
+      }
+    });
+  }
+
   async create(data: VehicleCreateDTO): Promise<Vehicle> {
     return await prisma.vehicle.create({ data });
   }

@@ -8,6 +8,7 @@ import { history } from "@History/infrastructure/dependencies";
 import { AddVehicleController } from "./controllers/add-vehicle.controller";
 import { ExitVehicleController } from "./controllers/exit-vehicle.controller";
 import { GetAllPaginateVehicleController } from "./controllers/getAllPaginate-vehicle.controller";
+import { SearchByPlateVehicleController } from "./controllers/searchByPlate-vehicle.controller";
 
 const getRepository = () => {
   switch (database.name) {
@@ -26,3 +27,5 @@ export const getAllPaginateVehicleController =
   new GetAllPaginateVehicleController(vehicle);
 export const addVehicleController = new AddVehicleController(vehicle);
 export const exitVehicleController = new ExitVehicleController(vehicle);
+export const searchByPlateVehicleController =
+  new SearchByPlateVehicleController(vehicle);

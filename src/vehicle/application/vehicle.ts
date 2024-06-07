@@ -52,6 +52,29 @@ export class VehicleApp {
     return await this.vehicleRepository.findAllPaginate(page, limit, idParking);
   }
 
+  async search(
+    plate: string,
+    roleName: string,
+    idUser: string
+  ): Promise<Vehicle[]> {
+    if (roleName === "socio") {
+      const parking = await this.parking.findAll(roleName, idUser);
+
+      if (parking.length === 0) {
+        throw new VehicleError({
+          method: "get",
+          message: "No associated parking"
+        });
+      }
+
+      const idsParking = parking.map((parking) => parking.id);
+
+      return await this.vehicleRepository.search(plate, idsParking);
+    }
+
+    return await this.vehicleRepository.search(plate);
+  }
+
   async create(data: VehicleCreateDTO, idUser: string): Promise<Vehicle> {
     const parking = await this.parking.findByIdWithSocio(
       data.idParking,

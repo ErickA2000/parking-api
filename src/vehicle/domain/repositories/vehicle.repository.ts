@@ -19,4 +19,5 @@ export interface VehicleRepository
     limit: number,
     idParking: string
   ): Promise<PaginateResponse<Vehicle>>;
+  search(plate: string, idsParking?: string[]): Promise<Vehicle[]>;
 }

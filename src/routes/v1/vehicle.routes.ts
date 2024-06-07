@@ -9,7 +9,8 @@ import {
   addVehicleController,
   exitVehicleController,
   getAllPaginateVehicleController,
-  getAllVehiclesController
+  getAllVehiclesController,
+  searchByPlateVehicleController
 } from "@Vehicle/infrastructure/dependencias";
 import { Router } from "express";
 
@@ -51,6 +52,12 @@ class VehicleRouter {
         validateDTO(VehicleOutParkingDTO)
       ],
       exitVehicleController.run.bind(exitVehicleController)
+    );
+
+    this.router.get(
+      "/",
+      [authentication.tokenValidation],
+      searchByPlateVehicleController.run.bind(searchByPlateVehicleController)
     );
   }
 }
