@@ -35,6 +35,13 @@ export const tokenValidation = async (
 
     next();
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "revoked") {
+        return res.status(CODES_HTTP.UNAUTHORIZED).json({
+          message: "Token has been revoked"
+        });
+      }
+    }
     return res.status(CODES_HTTP.UNAUTHORIZED).json({
       message: "Token no valido"
     });
@@ -111,7 +118,7 @@ export const isSocio = async (
   }
 };
 
-function extractTokenFromHeader(request: Request): string | undefined {
+export function extractTokenFromHeader(request: Request): string | undefined {
   if (request.headers.authorization === undefined) return undefined;
 
   const [type, token] = request.headers.authorization.split(" ") ?? [];
