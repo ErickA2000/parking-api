@@ -28,4 +28,4 @@ RUN npm ci
 
 EXPOSE $PORT
 
-ENTRYPOINT [ "node", "dist/server.js" ]
+CMD [ "sh", "-c", "npx prisma migrate deploy && npm start" ]
