@@ -1,5 +1,5 @@
-##Stage 1
-FROM node:18.17.0-alpine3.18 as build
+##* Stage 1
+FROM node:18 as build
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-##Stage 2
+##* Stage 2
 
 FROM node:18.17.0-alpine3.18
 
@@ -24,7 +24,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 
 RUN npx prisma generate
-RUN npm ci
+RUN npm install --omit=dev
 
 EXPOSE $PORT
 
